@@ -122,133 +122,100 @@ class PinjamanWidget extends StatelessWidget {
     return Column(
       children: [
         Container(
-          // color: R.colors.primary,
-          height: 30,
-          padding: EdgeInsets.all(5),
-          child: Row(
-            children: [
-              Text(
-                "Tanggal",
-                style:
-                    TextStyle(fontWeight: FontWeight.w700, color: Colors.blue),
-              ),
-              Spacer(),
-              Text(
-                // "$tanggals",
-                DateFormat("dd-MMM-yyy").format(DateTime.parse(tanggals!)),
-                style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 12,
-                    color: Colors.red),
-              ),
-            ],
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          ),
-        ),
-        Container(
-          padding: EdgeInsets.all(5),
-          margin: EdgeInsets.only(bottom: 15),
           decoration: BoxDecoration(
-            color: Colors.white,
-            // borderRadius: BorderRadius.circular(8),
-            // boxShadow: [
-            //   BoxShadow(
-            //     color: Colors.grey,
-            //     offset: const Offset(
-            //       5.0,
-            //       5.0,
-            //     ),
-            //     blurRadius: 3.0,
-            //     spreadRadius: 1.0,
-            //   ), //BoxShadow
-            //   BoxShadow(
-            //     color: Colors.white,
-            //     offset: const Offset(0.0, 0.0),
-            //     blurRadius: 0.0,
-            //     spreadRadius: 0.0,
-            //   ), //BoxShadow
-            // ],
-          ),
-          child: Container(
-            decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-                boxShadow: [
-                  BoxShadow(
-                      blurRadius: 10, color: Colors.black.withOpacity(0.25))
-                ]),
-            padding: EdgeInsets.all(8),
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Nomor Pinjaman",
-                    ),
-                    Spacer(),
-                    Text(
-                      "P-" + "$no",
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Jenis Pinjaman",
-                    ),
-                    Spacer(),
-                    Text("$jnsPinjaman"),
-                  ],
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Jumlah",
-                    ),
-                    Spacer(),
-                    Text(
-                      NumberFormat.currency(
-                              locale: 'id', symbol: "Rp. ", decimalDigits: 2)
-                          .format(jmlkredit),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Status Pinjaman",
-                    ),
-                    Spacer(),
-                    balances == 0
-                        ? Text(
-                            "LUNAS",
-                            style: TextStyle(
-                                color: Colors.green,
-                                fontWeight: FontWeight.bold),
-                          )
-                        : Text(
-                            "BELUM LUNAS",
-                            style: TextStyle(
-                                color: Colors.red, fontWeight: FontWeight.bold),
-                          ),
-                  ],
-                ),
-                SizedBox(height: 8),
-              ],
-            ),
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(5),
+              boxShadow: [
+                BoxShadow(blurRadius: 10, color: Colors.black.withOpacity(0.25))
+              ]),
+          padding: EdgeInsets.all(8),
+          margin: EdgeInsets.all(8),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    "Tanggal",
+                  ),
+                  Spacer(),
+                  Text(
+                    DateFormat("dd-MMM-yyy").format(DateTime.parse(tanggals!)),
+                    style: TextStyle(color: Colors.blue),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 5,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    "Nomor Pinjaman",
+                  ),
+                  Spacer(),
+                  Text(
+                    "P-" + "$no",
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 5,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    "Jenis Pinjaman",
+                  ),
+                  Spacer(),
+                  Text("$jnsPinjaman"),
+                ],
+              ),
+              SizedBox(
+                height: 5,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    "Jumlah",
+                  ),
+                  Spacer(),
+                  Text(
+                    NumberFormat.currency(
+                            locale: 'id', symbol: "Rp. ", decimalDigits: 2)
+                        .format(jmlkredit),
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+              Divider(
+                color: Colors.black,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    "STATUS",
+                  ),
+                  Spacer(),
+                  balances == 0
+                      ? Text(
+                          "LUNAS",
+                          style: TextStyle(
+                              color: Colors.green, fontWeight: FontWeight.bold),
+                        )
+                      : Text(
+                          "BELUM LUNAS",
+                          style: TextStyle(
+                              color: Colors.red, fontWeight: FontWeight.bold),
+                        ),
+                ],
+              ),
+              SizedBox(height: 8),
+            ],
           ),
         ),
       ],

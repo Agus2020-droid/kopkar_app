@@ -78,7 +78,7 @@ class _MyHomePageState extends State<MyHomePage> {
         initialRoute: "/",
         routes: {
           "/": (context) => const SplashScreen(),
-          // LoginPage.route: (context) => AuthContainer(),
+          LoginPage.route: (context) => const LoginPage(),
           // RegisterPage.route: (context) => const RegisterPage(),
           MainPage.route: (context) => MainPage(),
           // MapelPage.route: (context) => const MapelPage(),

@@ -124,7 +124,8 @@ class ShowShu extends StatelessWidget {
         Container(
           color: R.colors.primary,
           // height: 30,
-          padding: EdgeInsets.all(9),
+          padding: EdgeInsets.all(15),
+          margin: EdgeInsets.only(top: 10, left: 10, right: 10),
           child: Column(
             children: [
               Row(
@@ -136,8 +137,8 @@ class ShowShu extends StatelessWidget {
                   ),
                   Spacer(),
                   Text(
-                    // "030820922",
-                    "$tglShu",
+                    // "$tglShu",
+                    DateFormat("dd MMM yyy").format(DateTime.parse(tglShu!)),
                     style: TextStyle(
                         fontWeight: FontWeight.w700,
                         fontSize: 12,
@@ -146,6 +147,7 @@ class ShowShu extends StatelessWidget {
                 ],
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
               ),
+              SizedBox(height: 5),
               Row(
                 children: [
                   Text(
@@ -154,11 +156,12 @@ class ShowShu extends StatelessWidget {
                   ),
                   Spacer(),
                   Text(
-                    "P" + "$shuId",
-                    // "P" + "20",
+                    "P-" + "$shuId",
+                    style: TextStyle(color: Colors.white),
                   ),
                 ],
               ),
+              SizedBox(height: 5),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -174,6 +177,7 @@ class ShowShu extends StatelessWidget {
                   // Text("Pengembangan"),
                 ],
               ),
+              SizedBox(height: 5),
               Row(
                 children: [
                   Text(
@@ -194,26 +198,25 @@ class ShowShu extends StatelessWidget {
         ),
         Container(
           padding: EdgeInsets.all(5),
-          // margin: EdgeInsets.symmetric(vertical: 5),
+          margin: EdgeInsets.only(top: 5, left: 10, right: 10),
           decoration: BoxDecoration(
-            color: Colors.white,
             borderRadius: BorderRadius.vertical(bottom: Radius.circular(8)),
             boxShadow: [
-              // BoxShadow(
-              //   color: Colors.grey,
-              //   offset: const Offset(
-              //     5.0,
-              //     5.0,
-              //   ),
-              //   blurRadius: 3.0,
-              //   spreadRadius: 1.0,
-              // ), //BoxShadow
-              // BoxShadow(
-              //   color: Colors.white,
-              //   offset: const Offset(0.0, 0.0),
-              //   blurRadius: 0.0,
-              //   spreadRadius: 0.0,
-              // ), //BoxShadow
+              BoxShadow(
+                color: Colors.blue,
+                offset: const Offset(
+                  1.0,
+                  1.0,
+                ),
+                blurRadius: 2.0,
+                spreadRadius: 1.0,
+              ), //BoxShadow
+              BoxShadow(
+                color: Colors.white,
+                offset: const Offset(0.0, 0.0),
+                blurRadius: 0.0,
+                spreadRadius: 0.0,
+              ), //BoxShadow
             ],
           ),
           child: Container(
@@ -233,6 +236,7 @@ class ShowShu extends StatelessWidget {
                     ),
                   ],
                 ),
+                SizedBox(height: 5),
                 Row(
                   children: [
                     Text(
@@ -247,6 +251,7 @@ class ShowShu extends StatelessWidget {
                     ),
                   ],
                 ),
+                SizedBox(height: 5),
                 Row(
                   children: [
                     Text(
@@ -260,6 +265,7 @@ class ShowShu extends StatelessWidget {
                     ),
                   ],
                 ),
+                SizedBox(height: 5),
                 Row(
                   children: [
                     Text(
@@ -273,6 +279,7 @@ class ShowShu extends StatelessWidget {
                     ),
                   ],
                 ),
+                SizedBox(height: 5),
                 Row(
                   children: [
                     Text(
@@ -286,6 +293,7 @@ class ShowShu extends StatelessWidget {
                     ),
                   ],
                 ),
+                SizedBox(height: 5),
                 Row(
                   children: [
                     Text(
@@ -300,6 +308,7 @@ class ShowShu extends StatelessWidget {
                     ),
                   ],
                 ),
+                SizedBox(height: 5),
                 Row(
                   children: [
                     Text(
@@ -320,14 +329,16 @@ class ShowShu extends StatelessWidget {
                   children: [
                     Text(
                       "JUMLAH SHU (Rp)",
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.blue),
                     ),
                     Spacer(),
                     Text(
                       NumberFormat.currency(
                               locale: 'id', symbol: "Rp. ", decimalDigits: 2)
                           .format(jmlShu),
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.blue),
                     ),
                   ],
                 ),

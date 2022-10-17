@@ -33,6 +33,18 @@ class _ProfilePageState extends State<ProfilePage> {
     });
   }
 
+  read() async {
+    final prefs = await PreferenceHelper().getUserData();
+    final token = prefs.token!.token;
+    // final key = int.parse(token!);
+    print("KEY :");
+    print(token);
+    if (token == null) {
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => LoginPage()));
+    }
+  }
+
   DataAnggota? dataAnggota;
   getDataAnggota() async {
     final dataAnggotaResult = await KopkarJapernosaApi().getPegawai();
@@ -52,6 +64,7 @@ class _ProfilePageState extends State<ProfilePage> {
     super.initState();
     getUserData();
     getDataAnggota();
+    read();
   }
 
   @override
@@ -392,6 +405,7 @@ void _showDialog(BuildContext context) {
               final result = await KopkarJapernosaApi().postLogout();
               if (result.status == Status.success) pref.clear();
               print(result.data);
+
               Navigator.of(context)
                   .push(MaterialPageRoute(builder: (context) => LoginPage()));
             },

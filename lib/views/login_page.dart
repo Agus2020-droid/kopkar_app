@@ -29,7 +29,7 @@ class _LoginPageState extends State<LoginPage> {
     // final key = int.parse(token!);
     print("KEY :");
     print(token);
-    if (token != '0') {
+    if (token != null) {
       Navigator.of(context)
           .push(MaterialPageRoute(builder: (context) => MainPage()));
       //   } else {
@@ -189,6 +189,7 @@ class _LoginPageState extends State<LoginPage> {
                               Size(MediaQuery.of(context).size.width * 0.8, 50),
                         ),
                         onPressed: () async {
+                          _showLoading();
                           if (_formKey.currentState!.validate()) {
                             _loginData['telp'] = _telpController.text;
                             _loginData['password'] = _passwordController.text;
@@ -198,6 +199,7 @@ class _LoginPageState extends State<LoginPage> {
                             "telp": _telpController.text,
                             "password": _passwordController.text,
                           };
+
                           final result = await AuthApi().postLogin(json);
                           // print(result);
                           // print("Status :");
@@ -423,6 +425,34 @@ class _LoginPageState extends State<LoginPage> {
     //   ),
     // ),
     // );
+  }
+}
+
+class _showLoading extends StatelessWidget {
+  const _showLoading({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      // height: 16,
+      width: double.infinity,
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CircularProgressIndicator(
+              backgroundColor: Colors.red,
+            ),
+            SizedBox(
+              height: 8,
+            ),
+            Text("Loading...")
+          ],
+        ),
+      ),
+    );
   }
 }
 

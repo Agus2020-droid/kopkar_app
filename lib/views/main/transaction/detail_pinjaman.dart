@@ -155,26 +155,25 @@ class DetailPinjam extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(5),
-      // margin: EdgeInsets.symmetric(vertical: 5),
+      margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       decoration: BoxDecoration(
-        color: Colors.white,
         borderRadius: BorderRadius.circular(8),
         boxShadow: [
-          // BoxShadow(
-          //   color: Colors.grey,
-          //   offset: const Offset(
-          //     5.0,
-          //     5.0,
-          //   ),
-          //   blurRadius: 3.0,
-          //   spreadRadius: 1.0,
-          // ), //BoxShadow
-          // BoxShadow(
-          //   color: Colors.white,
-          //   offset: const Offset(0.0, 0.0),
-          //   blurRadius: 0.0,
-          //   spreadRadius: 0.0,
-          // ), //BoxShadow
+          BoxShadow(
+            color: Colors.blue,
+            offset: const Offset(
+              2.0,
+              2.0,
+            ),
+            blurRadius: 1.0,
+            spreadRadius: 0.0,
+          ), //BoxShadow
+          BoxShadow(
+            color: Colors.white,
+            offset: const Offset(0.0, 0.0),
+            blurRadius: 0.0,
+            spreadRadius: 0.0,
+          ), //BoxShadow
         ],
       ),
       child: Container(
@@ -197,6 +196,7 @@ class DetailPinjam extends StatelessWidget {
                 ),
               ],
             ),
+            SizedBox(height: 5),
             Row(
               children: [
                 Text(
@@ -222,10 +222,11 @@ class DetailPinjam extends StatelessWidget {
                 // Text("Pengembangan"),
               ],
             ),
+            SizedBox(height: 5),
             Row(
               children: [
                 Text(
-                  "Nama Barnag/Jasa",
+                  "Nama Barang/Jasa",
                 ),
                 Spacer(),
 
@@ -233,6 +234,7 @@ class DetailPinjam extends StatelessWidget {
                 // Text("Pengembangan"),
               ],
             ),
+            SizedBox(height: 5),
             Row(
               children: [
                 Text(
@@ -242,6 +244,7 @@ class DetailPinjam extends StatelessWidget {
                 Text("$spec"),
               ],
             ),
+            SizedBox(height: 5),
             Row(
               children: [
                 Text(
@@ -251,6 +254,7 @@ class DetailPinjam extends StatelessWidget {
                 Text("$merks"),
               ],
             ),
+            SizedBox(height: 5),
             Row(
               children: [
                 Text(
@@ -266,19 +270,6 @@ class DetailPinjam extends StatelessWidget {
             Row(
               children: [
                 Text(
-                  "Jumlah pengajuan",
-                ),
-                Spacer(),
-                Text(
-                  NumberFormat.currency(
-                          locale: 'id', symbol: "Rp. ", decimalDigits: 2)
-                      .format(plafons),
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                Text(
                   "Kredit Pinjaman",
                 ),
                 Spacer(),
@@ -290,6 +281,7 @@ class DetailPinjam extends StatelessWidget {
                 ),
               ],
             ),
+            SizedBox(height: 5),
             Row(
               children: [
                 Text(
@@ -304,19 +296,21 @@ class DetailPinjam extends StatelessWidget {
                 ),
               ],
             ),
+            SizedBox(height: 5),
             Row(
               children: [
                 Text(
-                  "Angsuran (kali)",
+                  "Tenor (kali)",
                 ),
                 Spacer(),
                 Text("$countAngsur" + "/" + "$tenors"),
               ],
             ),
+            SizedBox(height: 5),
             Row(
               children: [
                 Text(
-                  "Angsuran (Rp)",
+                  "Sudah diangsur",
                 ),
                 Spacer(),
                 Text(
@@ -338,6 +332,7 @@ class DetailPinjam extends StatelessWidget {
                 )
               ],
             ),
+            SizedBox(height: 5),
             Row(
               children: [
                 Text(
@@ -383,6 +378,7 @@ class DetailPinjam extends StatelessWidget {
                       )
               ],
             ),
+            SizedBox(height: 5),
             Row(
               children: [
                 Text(
@@ -428,6 +424,7 @@ class DetailPinjam extends StatelessWidget {
                       )
               ],
             ),
+            SizedBox(height: 5),
             Row(
               children: [
                 Text(
