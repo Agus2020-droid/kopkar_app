@@ -296,16 +296,16 @@ class _MainPageState extends State<MainPage> {
                       },
                       child: Column(
                         children: [
-                          Icon(
-                            Icons.account_circle,
-                            size: 30,
-                            color: index == 1 ? Colors.blue : Colors.grey,
-                          ),
-                          // Image.asset(
-                          //   R.assets.icProfile,
-                          //   height: 30,
-                          //   color: index == 1 ? null : Colors.grey,
+                          // Icon(
+                          //   Icons.account_circle,
+                          //   size: 30,
+                          //   color: index == 1 ? Colors.blue : Colors.grey,
                           // ),
+                          Image.asset(
+                            R.assets.imgLogoTrans,
+                            height: 30,
+                            color: index == 1 ? null : Colors.grey,
+                          ),
                           Text(
                             "Profile",
                             style: TextStyle(fontSize: 14),

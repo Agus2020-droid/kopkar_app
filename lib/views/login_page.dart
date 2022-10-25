@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kopkar_japernosa/contents/r.dart';
@@ -6,6 +7,7 @@ import 'package:kopkar_japernosa/models/network_response.dart';
 import 'package:kopkar_japernosa/models/user_login.dart';
 import 'package:kopkar_japernosa/repository/auth_api.dart';
 import 'package:kopkar_japernosa/views/main_page.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class LoginPage extends StatefulWidget {
@@ -175,21 +177,40 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                       SizedBox(height: 35),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          primary: Color(0xff3c8dbc),
-                          elevation: 0,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(25),
-                            side: BorderSide(
-                              color: Color(0xff3c8dbc),
+                      ButtonLogin(
+                        backgroundColor: R.colors.primary,
+                        borderColor: R.colors.primary,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            // Image.asset(R.assets.imgGoogle),
+                            // Icon(Icons.login),
+                            // SizedBox(
+                            //   width: 15,
+                            // ),
+                            Text(
+                              // R.strings.loginWithGoogle,
+                              "LOGIN",
+                              style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.white),
                             ),
-                          ),
-                          fixedSize:
-                              Size(MediaQuery.of(context).size.width * 0.8, 50),
+                          ],
                         ),
-                        onPressed: () async {
-                          _showLoading();
+                        // style: ElevatedButton.styleFrom(
+                        //   primary: Color(0xff3c8dbc),
+                        //   elevation: 0,
+                        //   shape: RoundedRectangleBorder(
+                        //     borderRadius: BorderRadius.circular(25),
+                        //     side: BorderSide(
+                        //       color: Color(0xff3c8dbc),
+                        //     ),
+                        //   ),
+                        //   fixedSize:
+                        //       Size(MediaQuery.of(context).size.width * 0.8, 50),
+                        // ),
+                        onTap: () async {
                           if (_formKey.currentState!.validate()) {
                             _loginData['telp'] = _telpController.text;
                             _loginData['password'] = _passwordController.text;
@@ -208,7 +229,8 @@ class _LoginPageState extends State<LoginPage> {
                           if (result.status == Status.success) {
                             final loginResult = Login.fromJson(result.data!);
                             // final loginResult = Token.fromJson(result.data!);
-
+                            print("loginResult.status");
+                            print(loginResult.status);
                             if (loginResult.status == 1) {
                               await PreferenceHelper()
                                   .setUserData(loginResult.data!.dataku!);
@@ -221,7 +243,7 @@ class _LoginPageState extends State<LoginPage> {
                             }
                             // print("Token :");
                             // print(loginResult.data!.dataku!.token!.token);
-                            // print(loginResult.status);
+
                           } else {
                             _showDialog(context);
                             // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -235,18 +257,18 @@ class _LoginPageState extends State<LoginPage> {
                           // Navigator.of(context).push(MaterialPageRoute(
                           //     builder: (context) => HomePage()));
                         },
-                        child: InkWell(
-                          onTap: () {
-                            // _telpController.text = '085325430003';
-                            // _passwordController.text = 'alfa2020';
-                          },
-                          child: Text(
-                            "LOGIN",
-                            style: TextStyle(
-                              fontSize: 18,
-                            ),
-                          ),
-                        ),
+                        // child: InkWell(
+                        //   onTap: () {
+                        //     // _telpController.text = '085325430003';
+                        //     // _passwordController.text = 'alfa2020';
+                        //   },
+                        //   child: Text(
+                        //     "LOGIN",
+                        //     style: TextStyle(
+                        //       fontSize: 18,
+                        //     ),
+                        //   ),
+                        // ),
                       ),
                       SizedBox(
                         height: 10,
@@ -255,13 +277,33 @@ class _LoginPageState extends State<LoginPage> {
                         padding: EdgeInsets.symmetric(horizontal: 25),
                         child: Row(
                           children: [
-                            GestureDetector(
-                                onTap: () => _resetPassword(),
-                                child: Text("Lupa Password")),
+                            RichText(
+                              text: TextSpan(children: [
+                                TextSpan(
+                                  text: 'Lupa Password',
+                                  style: new TextStyle(color: Colors.blue),
+                                  recognizer: new TapGestureRecognizer()
+                                    ..onTap = () {
+                                      launch(
+                                          'https://kopkar.japernosa.com/password/reset');
+                                    },
+                                ),
+                              ]),
+                            ),
                             Spacer(),
-                            GestureDetector(
-                                onTap: () => _register(),
-                                child: Text("Daftar")),
+                            RichText(
+                              text: TextSpan(children: [
+                                TextSpan(
+                                  text: 'Daftar',
+                                  style: new TextStyle(color: Colors.blue),
+                                  recognizer: new TapGestureRecognizer()
+                                    ..onTap = () {
+                                      launch(
+                                          'https://forms.gle/fsWPWzyyGu72miMK7');
+                                    },
+                                ),
+                              ]),
+                            ),
                           ],
                         ),
                       ),
@@ -442,9 +484,10 @@ class _showLoading extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            CircularProgressIndicator(
-              backgroundColor: Colors.red,
-            ),
+            // CircularProgressIndicator(
+            //   backgroundColor: Colors.red,
+            // ),
+            Image.asset(R.assets.imgNotFound),
             SizedBox(
               height: 8,
             ),
@@ -499,11 +542,11 @@ void _showDialog(BuildContext context) {
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: new Text("Alert!!"),
-        content: new Text("Login gagal"),
+        title: new Text("Alert!"),
+        content: new Text("Login gagal, Silahkan coba lagi"),
         actions: <Widget>[
           new FlatButton(
-            child: new Text("OK"),
+            child: new Text("Close"),
             onPressed: () {
               Navigator.of(context).pop();
             },

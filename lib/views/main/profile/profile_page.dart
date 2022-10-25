@@ -8,11 +8,13 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:intl/intl.dart';
 import 'package:kopkar_japernosa/contents/r.dart';
 import 'package:kopkar_japernosa/helpers/preference_helper.dart';
+import 'package:kopkar_japernosa/main.dart';
 import 'package:kopkar_japernosa/models/data_anggota.dart';
 import 'package:kopkar_japernosa/models/network_response.dart';
 import 'package:kopkar_japernosa/models/user_login.dart';
 import 'package:kopkar_japernosa/repository/kopkar_japernosa_api.dart';
 import 'package:kopkar_japernosa/views/login_page.dart';
+import 'package:kopkar_japernosa/views/splash_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -156,7 +158,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             Container(
                               margin: EdgeInsets.only(right: 30),
                               child: ClipRRect(
-                                borderRadius: BorderRadius.circular(15.0),
+                                borderRadius: BorderRadius.circular(45.0),
                                 child: Image.network(
                                   'https://kopkar.japernosa.com/public/public/foto_user/${dataAnggota!.data!.fotoPegawai}',
                                   fit: BoxFit.cover,
@@ -303,9 +305,10 @@ class _ProfilePageState extends State<ProfilePage> {
                             Text(
                               (dataAnggota!.data!.tempatLahir ?? "Wonosobo") +
                                   "," +
-                                  (dataAnggota!.data!.tglLahir ?? "12-12-1985"),
-                              // formatDate(
-                              //     tgllahir, [dd, '-', mm, '-', yyyy]),
+                                  // (dataAnggota!.data!.tglLahir ?? "12-12-1985"),
+                                  DateFormat("dd MMMM yyy").format(
+                                      DateTime.parse(
+                                          dataAnggota!.data!.tglLahir!)),
                               style: TextStyle(
                                   color: Colors.black,
                                   fontSize: 14,
@@ -346,7 +349,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                       ),
                       GestureDetector(
-                        onTap: () {
+                        onTap: () async {
                           _showDialog(context);
                         },
                         child: Container(
@@ -404,10 +407,12 @@ void _showDialog(BuildContext context) {
               final pref = await SharedPreferences.getInstance();
               final result = await KopkarJapernosaApi().postLogout();
               if (result.status == Status.success) pref.clear();
-              print(result.data);
+              // print(result.data);
 
-              Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (context) => LoginPage()));
+              // Navigator.of(context).push(
+              //     MaterialPageRoute(builder: (context) => SplashScreen()));
+              Navigator.pushReplacement(
+                  context, MaterialPageRoute(builder: (context) => MyApp()));
             },
             child: const Text('OK'),
           ),

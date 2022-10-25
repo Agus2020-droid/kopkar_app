@@ -451,22 +451,7 @@ class _TambahPinjamanState extends State<TambahPinjaman> {
                                   type: CoolAlertType.success,
                                   text: "Selamat, pengajuan berhasil dibuat",
                                   autoCloseDuration: Duration(seconds: 2));
-                              // Navigator.of(context).pop();
-
-                              // Navigator.pop(context, true);
-                              // } else {
-                              //   ScaffoldMessenger.of(context).showSnackBar(
-                              //     SnackBar(
-                              //       content: Text(result.message!),
-                              //     ),
-                              //   );
-                              // }
                             } else {
-                              // ScaffoldMessenger.of(context).showSnackBar(
-                              //   SnackBar(
-                              //     content: Text(result.message!),
-                              //   ),
-                              // );
                               CoolAlert.show(
                                   context: context,
                                   type: CoolAlertType.error,

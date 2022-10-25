@@ -227,4 +227,23 @@ class KopkarJapernosaApi {
     );
     return result;
   }
+
+  Future<NetworkResponse> getAngsuran(id) async {
+    final result = await _getRequest(
+      endpoint: ApiUrl.angsurans,
+      param: {
+        "no_pinjaman": id,
+      },
+    );
+    return result;
+  }
+
+  Future<NetworkResponse> getBanner() async {
+    final result = await _getRequest(
+      endpoint: ApiUrl.banners,
+      // param: {
+      // },
+    );
+    return result;
+  }
 }

@@ -18,4 +18,6 @@ class ApiUrl {
   static String pinjamanDetails = "pinjamanDetail";
   static String tambahPinjamans = "tambahPinjaman";
   static String pegawais = "pegawai";
+  static String angsurans = "angsuran";
+  static String banners = "banner";
 }

@@ -5,8 +5,11 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:intl/intl.dart';
 import 'package:kopkar_japernosa/contents/r.dart';
 import 'package:kopkar_japernosa/models/detail_pinjaman_page.dart';
+import 'package:kopkar_japernosa/models/list_angsuran.dart';
 import 'package:kopkar_japernosa/models/network_response.dart';
 import 'package:kopkar_japernosa/repository/kopkar_japernosa_api.dart';
+import 'package:kopkar_japernosa/views/login_page.dart';
+import 'package:kopkar_japernosa/views/main/transaction/angsuran_page.dart';
 
 class DetailPinjamanPage extends StatefulWidget {
   const DetailPinjamanPage({Key? key, required this.id}) : super(key: key);
@@ -30,11 +33,26 @@ class _DetailPinjamanPageState extends State<DetailPinjamanPage> {
     }
   }
 
+  ListAngsuran? listAngsuran;
+  getDataAngsur() async {
+    final resultlistAngsuran =
+        await KopkarJapernosaApi().getAngsuran(widget.id);
+    if (resultlistAngsuran.status == Status.success) {
+      listAngsuran = ListAngsuran.fromJson(resultlistAngsuran.data!);
+      final angsuran = listAngsuran!.data!;
+      setState(() {
+        print("Angsuran");
+        print(listAngsuran);
+      });
+    }
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     getDetailPinjaman();
+    getDataAngsur();
   }
 
   @override
@@ -42,70 +60,65 @@ class _DetailPinjamanPageState extends State<DetailPinjamanPage> {
     return Scaffold(
       appBar: AppBar(
           elevation: 0, centerTitle: true, title: Text("Detail Pinjaman")),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 5),
-        child: detailPinjaman == null
-            ? Container(
-                // height: 16,
-                width: double.infinity,
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      CircularProgressIndicator(
-                        backgroundColor: Colors.red,
-                      ),
-                      SizedBox(
-                        height: 8,
-                      ),
-                      Text("Loading...")
-                    ],
-                  ),
+      body: detailPinjaman == null || listAngsuran == null
+          ? Container(
+              // height: 16,
+              width: double.infinity,
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CircularProgressIndicator(
+                      backgroundColor: Colors.red,
+                    ),
+                    SizedBox(
+                      height: 8,
+                    ),
+                    Text("Loading...")
+                  ],
                 ),
-              )
-            : Container(
-                child: ListView.builder(
-                    itemCount: detailPinjaman!.data!.length,
-                    itemBuilder: (context, index) {
-                      final currentPinjaman = detailPinjaman!.data![index];
-                      final String nomor =
-                          currentPinjaman.noPinjaman!.toString();
-
-                      final ttlPinjam = currentPinjaman.totalKredit!;
-                      final totalPinjam = ttlPinjam.toString();
-
-                      final jmlAngsuran = currentPinjaman.totalAngsuran;
-
-                      final plaf = currentPinjaman.plafon!;
-                      final plafs = plaf.toString();
-                      final posisi = currentPinjaman.posisi!;
-                      // print(currentPinjaman.jenisPinjaman);
-                      return GestureDetector(
-                        child: DetailPinjam(
-                          no: currentPinjaman.noPinjaman.toString(),
-                          jnsPinjaman: currentPinjaman.jenisPinjaman!,
-                          jmlkredit: double.tryParse(totalPinjam),
-                          tglPinjam: currentPinjaman.tglPengajuan!,
-                          nmbrng: currentPinjaman.namaBarang!,
-                          posisis: currentPinjaman.posisi!,
-                          ttdAdmin: currentPinjaman.statusPengajuan!,
-                          ttdHrbp: currentPinjaman.ttdHrbp!,
-                          ttdKetua: currentPinjaman.ttdKetua!,
-                          plafons: double.parse(plafs),
-                          merks: currentPinjaman.merk!,
-                          spec: currentPinjaman.spesifikasi!,
-                          units: currentPinjaman.unit!,
-                          tenors: int.parse(currentPinjaman.tenor!),
-                          angsurans: double.parse(currentPinjaman.angsuran!),
-                          jmlAngsur: double.parse(jmlAngsuran!),
-                          countAngsur:
-                              int.parse(currentPinjaman.countAngsuran!),
-                          sisa: double.parse(currentPinjaman.sisaAngsuran!),
-                        ),
-                      );
-                    }),
               ),
-      ),
+            )
+          : Container(
+              child: ListView.builder(
+                  itemCount: detailPinjaman!.data!.length,
+                  itemBuilder: (context, index) {
+                    final currentPinjaman = detailPinjaman!.data![index];
+                    final String nomor = currentPinjaman.noPinjaman!.toString();
+
+                    final ttlPinjam = currentPinjaman.totalKredit!;
+                    final totalPinjam = ttlPinjam.toString();
+
+                    final jmlAngsuran = currentPinjaman.totalAngsuran;
+
+                    final plaf = currentPinjaman.plafon!;
+                    final plafs = plaf.toString();
+                    final posisi = currentPinjaman.posisi!;
+                    // print(currentPinjaman.jenisPinjaman);
+                    return GestureDetector(
+                      child: DetailPinjam(
+                        no: currentPinjaman.noPinjaman,
+                        jnsPinjaman: currentPinjaman.jenisPinjaman!,
+                        jmlkredit: double.tryParse(totalPinjam),
+                        tglPinjam: currentPinjaman.tglPengajuan!,
+                        nmbrng: currentPinjaman.namaBarang!,
+                        posisis: currentPinjaman.posisi!,
+                        ttdAdmin: currentPinjaman.statusPengajuan!,
+                        ttdHrbp: currentPinjaman.ttdHrbp!,
+                        ttdKetua: currentPinjaman.ttdKetua!,
+                        plafons: double.parse(plafs),
+                        merks: currentPinjaman.merk!,
+                        spec: currentPinjaman.spesifikasi!,
+                        units: currentPinjaman.unit!,
+                        tenors: int.parse(currentPinjaman.tenor!),
+                        angsurans: double.parse(currentPinjaman.angsuran!),
+                        jmlAngsur: double.parse(jmlAngsuran!),
+                        countAngsur: int.parse(currentPinjaman.countAngsuran!),
+                        sisa: double.parse(currentPinjaman.sisaAngsuran!),
+                      ),
+                    );
+                  }),
+            ),
     );
   }
 }
@@ -139,7 +152,7 @@ class DetailPinjam extends StatelessWidget {
   final double? angsurans;
   final double? sisa;
   final int? countAngsur;
-  final String? no;
+  final int? no;
   final String? spec;
   final String? merks;
   final double? plafons;
@@ -155,7 +168,7 @@ class DetailPinjam extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(5),
-      margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
         boxShadow: [
@@ -491,6 +504,19 @@ class DetailPinjam extends StatelessWidget {
               ],
             ),
             SizedBox(height: 8),
+            Container(
+              child: ButtonLogin(
+                  backgroundColor: R.colors.primary,
+                  child: Text("Rincian Angsuran"),
+                  borderColor: R.colors.primary,
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => AngsuranPage(id: no!),
+                      ),
+                    );
+                  }),
+            )
           ],
         ),
       ),

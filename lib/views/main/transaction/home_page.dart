@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:kopkar_japernosa/contents/r.dart';
 import 'package:kopkar_japernosa/helpers/preference_helper.dart';
+import 'package:kopkar_japernosa/models/list_banner.dart';
 import 'package:kopkar_japernosa/models/network_response.dart';
 import 'package:kopkar_japernosa/models/sisa_pinjaman.dart';
 import 'package:kopkar_japernosa/models/total_simpanan.dart';
@@ -64,14 +65,27 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  ListBanner? listBanner;
+  Future getListBanner() async {
+    final result = await KopkarJapernosaApi().getBanner();
+    if (result.status == Status.success) {
+      listBanner = ListBanner.fromJson(result.data!);
+
+      setState(() {
+        print("Banner");
+        print(listBanner!.data!.length);
+      });
+    }
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     getUserDAta();
     getTotalSimpan();
-
     getSisaPinjam();
+    getListBanner();
   }
 
   @override
@@ -99,7 +113,6 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
-
       body: ttlSimpanan == null || sisaKredit == null
           ? Container(
               // height: 16,
@@ -127,459 +140,86 @@ class _HomePageState extends State<HomePage> {
                       email: dataUser!.user!.email,
                       foto: dataUser!.user!.fotoPegawai),
                   SizedBox(
-                    height: 25,
+                    height: 8,
                   ),
                   BannerCard(),
+                  SizedBox(
+                    height: 8,
+                  ),
                   MenuCard(
                     saldoSimpanan: ttlSimpanan!,
                     saldoPinjaman: sisaKredit!,
                   ),
-                  SizedBox(
-                    height: 10,
+                  Container(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 30),
+                          child: Text("Terbaru",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 16)),
+                        ),
+                        SizedBox(height: 10),
+                        // bannerList == null
+                        //     ? Container(
+                        //         height: 70,
+                        //         width: double.infinity,
+                        //         child: Center(child: CircularProgressIndicator()),
+                        //       )
+                        //     :
+                        listBanner == null
+                            ? Container(
+                                // height: 16,
+                                width: double.infinity,
+                                child: Center(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      CircularProgressIndicator(
+                                        backgroundColor: Colors.red,
+                                      ),
+                                      SizedBox(
+                                        height: 8,
+                                      ),
+                                      Text("Loading...")
+                                    ],
+                                  ),
+                                ),
+                              )
+                            : Container(
+                                height: 150,
+                                child: ListView.builder(
+                                  //content
+                                  itemCount: listBanner!.data!.length,
+                                  scrollDirection: Axis.horizontal,
+                                  itemBuilder: ((context, index) {
+                                    final currentBanner =
+                                        listBanner!.data![index];
+                                    print(currentBanner.lampiran);
+                                    return Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 20.0, right: 20),
+                                      child: Row(
+                                        children: [
+                                          ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              child: Image.network(
+                                                'https://kopkar.japernosa.com/public/public/lampiran_pengumuman/${currentBanner.lampiran}',
+                                              )),
+                                        ],
+                                      ),
+                                    );
+                                  }),
+                                ),
+                              ),
+                      ],
+                    ),
                   ),
-                  // Container(
-                  //   child: Column(
-                  //     crossAxisAlignment: CrossAxisAlignment.start,
-                  //     children: [
-                  //       Padding(
-                  //         padding: EdgeInsets.symmetric(horizontal: 30),
-                  //         child: Text("Terbaru",
-                  //             style: TextStyle(
-                  //                 fontWeight: FontWeight.bold, fontSize: 16)),
-                  //       ),
-                  //       SizedBox(height: 10),
-                  //       // bannerList == null
-                  //       //     ? Container(
-                  //       //         height: 70,
-                  //       //         width: double.infinity,
-                  //       //         child: Center(child: CircularProgressIndicator()),
-                  //       //       )
-                  //       //     :
-                  //       Container(
-                  //         height: 150,
-                  //         child: ListView.builder(
-                  //           //content
-                  //           itemCount: 2,
-                  //           scrollDirection: Axis.horizontal,
-                  //           itemBuilder: ((context, index) {
-                  //             // final currentBanner = bannerList!.data![index];
-                  //             return Padding(
-                  //                 padding: const EdgeInsets.only(left: 20.0),
-                  //                 child: ClipRRect(
-                  //                     borderRadius: BorderRadius.circular(10),
-                  //                     child: Image.asset(R.assets.banneHome)));
-                  //           }),
-                  //         ),
-                  //       )
-                  //     ],
-                  //   ),
-                  // ),
                 ],
               ),
             ),
-
-      //   appBar: AppBar(
-      //     centerTitle: true,
-      //     title: Row(
-      //       mainAxisAlignment: MainAxisAlignment.center,
-      //       children: [
-      //         const Text(
-      //           'KOPKAR ',
-      //           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-      //         ),
-      //         Text(
-      //           "Japernosa",
-      //           style: TextStyle(fontSize: 18),
-      //         )
-      //       ],
-      //     ),
-      //     backgroundColor: R.colors.primary,
-      //     elevation: 0,
-      //   ),
-      //   body: Stack(
-      //     children: [
-      //       ClipPath(
-      //         clipper: ClipPathClass(),
-      //         child: Container(
-      //           height: 320,
-      //           color: R.colors.primary,
-      //         ),
-      //       ),
-      //       Container(
-      //         // margin: EdgeInsets.only(top: 10),
-      //         child: Column(
-      //           children: [
-      //             Column(
-      //               children: [
-      //                 Container(
-      //                   child: new Stack(
-      //                     children: <Widget>[
-      //                       Container(
-      //                         padding: EdgeInsets.all(15.0),
-      //                         height: 80,
-      //                         decoration: BoxDecoration(
-      //                           color: R.colors.primary,
-      //                         ),
-      //                       ),
-      //                       FractionalTranslation(
-      //                         translation: Offset(-0.35, 0.25),
-      //                         child: Align(
-      //                           child: CircleAvatar(
-      //                             backgroundColor: Colors.white,
-      //                             minRadius: 10.0,
-      //                             child: ClipRRect(
-      //                               borderRadius: BorderRadius.circular(15.0),
-      //                               child: Image.asset(
-      //                                 R.assets.imgLogo,
-      //                                 height: 70,
-      //                                 width: 70,
-      //                               ),
-      //                             ),
-      //                           ),
-      //                           alignment: FractionalOffset(0.5, 0.0),
-      //                         ),
-      //                       ),
-      //                       FractionalTranslation(
-      //                         translation: Offset(0.3, 0.6),
-      //                         child: Align(
-      //                           child: Column(
-      //                             crossAxisAlignment: CrossAxisAlignment.start,
-      //                             children: [
-      //                               Text("Hi," + "$name",
-      //                                   style: GoogleFonts.poppins(
-      //                                       color: Colors.white,
-      //                                       fontSize: 14,
-      //                                       fontWeight: FontWeight.w500)),
-      //                               Row(
-      //                                 // mainAxisAlignment:
-      //                                 //     MainAxisAlignment.spaceBetween,
-      //                                 children: [
-      //                                   Text("$email",
-      //                                       style: GoogleFonts.poppins(
-      //                                           color: Colors.white,
-      //                                           fontSize: 12,
-      //                                           fontWeight: FontWeight.w500)
-      //                                       // TextStyle(
-      //                                       //     color: Colors.white,
-      //                                       //     fontSize: 16,
-      //                                       //     fontWeight: FontWeight.w700),
-      //                                       ),
-      //                                 ],
-      //                               ),
-      //                             ],
-      //                           ),
-      //                           alignment: FractionalOffset(0.5, 0.0),
-      //                         ),
-      //                       ),
-      //                     ],
-      //                   ),
-      //                 ),
-      //                 SizedBox(height: 5),
-      //                 Container(
-      //                   height: 90,
-      //                   // width: double.infinity,
-      //                   padding: EdgeInsets.symmetric(vertical: 5.0),
-      //                   // margin: EdgeInsets.symmetric(horizontal: 20),
-      //                   margin: EdgeInsets.all(15),
-      //                   decoration: BoxDecoration(
-      //                     boxShadow: [
-      //                       BoxShadow(
-      //                         color: Colors.orange,
-      //                         offset: const Offset(
-      //                           5.0,
-      //                           5.0,
-      //                         ),
-      //                         blurRadius: 3.0,
-      //                         spreadRadius: 1.0,
-      //                       ), //BoxShadow
-      //                       BoxShadow(
-      //                         color: Colors.white,
-      //                         offset: const Offset(0.0, 0.0),
-      //                         blurRadius: 0.0,
-      //                         spreadRadius: 0.0,
-      //                       ), //BoxShadow
-      //                     ],
-      //                     borderRadius: BorderRadius.circular(3),
-      //                   ),
-      //                   child: Padding(
-      //                     padding: const EdgeInsets.only(left: 40, top: 10),
-      //                     child: Column(
-      //                       children: [
-      //                         Row(
-      //                           children: [
-      //                             Column(
-      //                               crossAxisAlignment: CrossAxisAlignment.start,
-      //                               children: [
-      //                                 Row(
-      //                                   children: [
-      //                                     Text("Saldo Tabungan",
-      //                                         style: GoogleFonts.poppins(
-      //                                             color: Colors.blue,
-      //                                             fontSize: 18)),
-      //                                     SizedBox(
-      //                                       width: 8,
-      //                                     ),
-      //                                     Icon(
-      //                                       Icons.verified,
-      //                                       size: 16,
-      //                                       color: Colors.lightGreen,
-      //                                     )
-      //                                   ],
-      //                                 ),
-      //                                 Row(
-      //                                   children: [
-      //                                     ttlSimpanan == null
-      //                                         ? Container(
-      //                                             // height: 16,
-      //                                             width: double.infinity,
-      //                                             child: Center(
-      //                                               child:
-      //                                                   CircularProgressIndicator(),
-      //                                             ),
-      //                                           )
-      //                                         : Text(
-      //                                             // "300000",
-      //                                             NumberFormat.currency(
-      //                                                     locale: 'id',
-      //                                                     symbol: "Rp. ",
-      //                                                     decimalDigits: 0)
-      //                                                 .format(ttlSimpanan),
-      //                                             style: GoogleFonts.poppins(
-      //                                                 fontSize: 25),
-      //                                           ),
-      //                                     Text(",00",
-      //                                         style: GoogleFonts.poppins())
-      //                                   ],
-      //                                 ),
-      //                               ],
-      //                             ),
-      //                           ],
-      //                         )
-      //                       ],
-      //                     ),
-      //                   ),
-      //                 ),
-      //                 Container(
-      //                   height: 90,
-      //                   padding: EdgeInsets.symmetric(vertical: 5.0),
-      //                   // margin: EdgeInsets.symmetric(horizontal: 20),
-      //                   margin: EdgeInsets.all(
-      //                     15,
-      //                   ),
-      //                   decoration: BoxDecoration(
-      //                     boxShadow: [
-      //                       BoxShadow(
-      //                         color: Colors.blue,
-      //                         offset: const Offset(
-      //                           5.0,
-      //                           5.0,
-      //                         ),
-      //                         blurRadius: 3.0,
-      //                         spreadRadius: 1.0,
-      //                       ), //BoxShadow
-      //                       BoxShadow(
-      //                         color: Colors.white,
-      //                         offset: const Offset(0.0, 0.0),
-      //                         blurRadius: 0.0,
-      //                         spreadRadius: 0.0,
-      //                       ), //BoxShadow
-      //                     ],
-      //                     borderRadius: BorderRadius.circular(3),
-      //                   ),
-      //                   child: Padding(
-      //                     padding: const EdgeInsets.only(left: 40, top: 10),
-      //                     child: Column(
-      //                       children: [
-      //                         Row(
-      //                           children: [
-      //                             Container(
-      //                               child: Column(
-      //                                 crossAxisAlignment:
-      //                                     CrossAxisAlignment.start,
-      //                                 children: [
-      //                                   Row(
-      //                                     children: [
-      //                                       Text("Pinjaman Kredit",
-      //                                           style: GoogleFonts.poppins(
-      //                                               color: Colors.black,
-      //                                               fontSize: 18)),
-      //                                       SizedBox(
-      //                                         width: 8,
-      //                                       ),
-      //                                       Icon(Icons.verified,
-      //                                           size: 16, color: Colors.blue)
-      //                                     ],
-      //                                   ),
-      //                                   Row(
-      //                                     children: [
-      //                                       sisaKredit == null
-      //                                           ? Container(
-      //                                               // height: 16,
-      //                                               width: double.infinity,
-      //                                               child: Center(
-      //                                                 child:
-      //                                                     CircularProgressIndicator(),
-      //                                               ),
-      //                                             )
-      //                                           : Text(
-      //                                               // "300000",
-      //                                               NumberFormat.currency(
-      //                                                       locale: 'id',
-      //                                                       symbol: "Rp. ",
-      //                                                       decimalDigits: 0)
-      //                                                   .format(sisaKredit),
-      //                                               style: GoogleFonts.poppins(
-      //                                                   fontSize: 25)),
-      //                                       Text(",00",
-      //                                           style: GoogleFonts.poppins())
-      //                                     ],
-      //                                   ),
-      //                                 ],
-      //                               ),
-      //                             ),
-      //                           ],
-      //                         )
-      //                       ],
-      //                     ),
-      //                   ),
-      //                 ),
-      //               ],
-      //             ),
-      //             Expanded(
-      //               child: Container(
-      //                 // color: Colors.purple,
-      //                 child: Column(
-      //                   children: [
-      //                     // body
-      //                     Expanded(
-      //                       child: ListView(
-      //                         padding: EdgeInsets.symmetric(horizontal: 25),
-      //                         children: [
-      //                           SizedBox(height: 20),
-      //                           Text(
-      //                             "Pilihan transaksi",
-      //                             style: TextStyle(
-      //                               fontSize: 16,
-      //                               fontWeight: FontWeight.bold,
-      //                             ),
-      //                           ),
-      //                           SizedBox(height: 20),
-      //                           Row(
-      //                             mainAxisAlignment:
-      //                                 MainAxisAlignment.spaceBetween,
-      //                             children: [
-      //                               GestureDetector(
-      //                                 onTap: () {
-      //                                   Navigator.of(context).push(
-      //                                       MaterialPageRoute(
-      //                                           builder: (context) =>
-      //                                               SimpananPage()));
-      //                                 },
-      //                                 child: ItemKategori(
-      //                                   title: "Tabungan",
-      //                                   icon: "assets/ic_atom.png",
-      //                                 ),
-      //                               ),
-      //                               GestureDetector(
-      //                                 onTap: () {
-      //                                   Navigator.of(context).push(
-      //                                       MaterialPageRoute(
-      //                                           builder: (context) =>
-      //                                               PinjamanPage()));
-      //                                 },
-      //                                 child: ItemKategori(
-      //                                   title: "Pinjaman",
-      //                                   icon: "assets/ic_kimia.png",
-      //                                 ),
-      //                               ),
-      //                               GestureDetector(
-      //                                 onTap: () {
-      //                                   Navigator.of(context).push(
-      //                                       MaterialPageRoute(
-      //                                           builder: (context) => ShuPage()));
-      //                                 },
-      //                                 child: ItemKategori(
-      //                                   title: "SHU",
-      //                                   icon: "assets/ic_lang.png",
-      //                                 ),
-      //                               ),
-      //                               GestureDetector(
-      //                                 onTap: () {
-      //                                   Navigator.of(context).push(
-      //                                       MaterialPageRoute(
-      //                                           builder: (context) =>
-      //                                               SimulasiPage()));
-      //                                 },
-      //                                 child: ItemKategori(
-      //                                   title: "Simulasi",
-      //                                   icon: "assets/ic_dna.png",
-      //                                 ),
-      //                               ),
-      //                             ],
-      //                           ),
-      //                           SizedBox(height: 30),
-      //                           Row(
-      //                             crossAxisAlignment: CrossAxisAlignment.end,
-      //                             mainAxisAlignment:
-      //                                 MainAxisAlignment.spaceBetween,
-      //                             children: [
-      //                               Text(
-      //                                 "Terbaru dari Kopkar",
-      //                                 style: TextStyle(
-      //                                   fontSize: 16,
-      //                                   fontWeight: FontWeight.bold,
-      //                                 ),
-      //                               ),
-      //                               Text(
-      //                                 "Lihat Semua",
-      //                                 style: TextStyle(
-      //                                   fontSize: 12,
-      //                                   color: Colors.red,
-      //                                   fontWeight: FontWeight.bold,
-      //                                 ),
-      //                               ),
-      //                             ],
-      //                           ),
-      //                           SizedBox(height: 20),
-      //                           SingleChildScrollView(
-      //                             scrollDirection: Axis.horizontal,
-      //                             child: Row(
-      //                               children: [
-      //                                 ItemTerbaru(
-      //                                   image: "assets/img_banner.png",
-      //                                 ),
-      //                                 ItemTerbaru(
-      //                                   image: "assets/img_banner.png",
-      //                                 ),
-      //                                 ItemTerbaru(
-      //                                   image: "assets/img_banner.png",
-      //                                 ),
-      //                                 ItemTerbaru(
-      //                                   image: "assets/img_banner.png",
-      //                                 ),
-      //                                 ItemTerbaru(
-      //                                   image: "assets/img_banner.png",
-      //                                 ),
-      //                                 ItemTerbaru(
-      //                                   image: "assets/img_banner.png",
-      //                                 ),
-      //                               ],
-      //                             ),
-      //                           ),
-      //                           SizedBox(height: 30),
-      //                         ],
-      //                       ),
-      //                     ),
-      //                   ],
-      //                 ),
-      //               ),
-      //             ),
-      //           ],
-      //         ),
-      //       )
-      //     ],
-      //   ),
-      // );
     );
   }
 }
@@ -605,19 +245,45 @@ class BannerCard extends StatelessWidget {
           ),
           // color: R.colors.primary,
           borderRadius: BorderRadius.circular(20)),
-      height: min(125, 125),
+      height: min(130, 130),
       width: double.infinity,
       child: Stack(
         children: [
           Container(
             width: MediaQuery.of(context).size.width * 0.6,
-            padding: const EdgeInsets.symmetric(horizontal: 28.0, vertical: 15),
-            child: Text(
-              "Cek saldo simpanan atau transaksi pinjaman kini lebih mudah dan nyaman",
-              style: TextStyle(
-                  fontSize: 18,
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold),
+            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 15),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Cek saldo simpanan atau transaksi pinjaman kini lebih mudah dan nyaman",
+                  style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold),
+                ),
+                SizedBox(
+                  height: 15,
+                ),
+                Row(
+                  children: [
+                    Icon(
+                      Icons.phone_android,
+                      color: Colors.white,
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text(
+                      "KOPKAR JPNS MOBILE",
+                      style: TextStyle(
+                          fontSize: 10,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                )
+              ],
             ),
           ),
           Positioned(
@@ -749,27 +415,27 @@ class MenuCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Container(
-        margin: EdgeInsets.all(20),
+        // margin: EdgeInsets.all(20),
         padding: EdgeInsets.all(5),
 
         child: Column(
           children: [
             Container(
               padding: EdgeInsets.all(10),
-              height: 70,
+              height: 80,
               decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(8),
+                  // color: Colors.white,
+                  // borderRadius: BorderRadius.circular(8),
                   boxShadow: [
-                    BoxShadow(
-                      color: Colors.blue,
-                      offset: const Offset(
-                        3.0,
-                        2.0,
-                      ),
-                      blurRadius: 5.0,
-                      spreadRadius: 1.0,
-                    ), //BoxShadow
+                    // BoxShadow(
+                    //   color: Colors.blue,
+                    //   offset: const Offset(
+                    //     3.0,
+                    //     2.0,
+                    //   ),
+                    //   blurRadius: 5.0,
+                    //   spreadRadius: 1.0,
+                    // ), //BoxShadow
                     BoxShadow(
                       color: Colors.white,
                       offset: const Offset(0.0, 0.0),
@@ -777,20 +443,20 @@ class MenuCard extends StatelessWidget {
                       spreadRadius: 0.0,
                     ), //
                   ]),
-              child: ListTile(
-                leading: Icon(
-                  Icons.save_alt_rounded,
-                  size: 40,
-                  color: Colors.blue,
-                ),
-                title: Row(
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => SimpananPage()));
-                      },
-                      child: Column(
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => SimpananPage()));
+                },
+                child: ListTile(
+                  leading: Icon(
+                    Icons.save_alt_rounded,
+                    size: 40,
+                    color: Colors.blue,
+                  ),
+                  title: Row(
+                    children: [
+                      Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text('Saldo Simpanan',
@@ -813,30 +479,30 @@ class MenuCard extends StatelessWidget {
                           ),
                         ],
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
-            SizedBox(
-              height: 15,
-            ),
+            // SizedBox(
+            //   height: 15,
+            // ),
             Container(
               padding: EdgeInsets.all(10),
-              height: 70,
+              height: 80,
               decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(8),
+                  // color: Colors.white,
+                  // borderRadius: BorderRadius.circular(8),
                   boxShadow: [
-                    BoxShadow(
-                      color: Colors.purple,
-                      offset: const Offset(
-                        3.0,
-                        2.0,
-                      ),
-                      blurRadius: 5.0,
-                      spreadRadius: 1.0,
-                    ), //BoxShadow
+                    // BoxShadow(
+                    //   color: Colors.purple,
+                    //   offset: const Offset(
+                    //     3.0,
+                    //     2.0,
+                    //   ),
+                    //   blurRadius: 5.0,
+                    //   spreadRadius: 1.0,
+                    // ), //BoxShadow
                     BoxShadow(
                       color: Colors.white,
                       offset: const Offset(0.0, 0.0),
@@ -844,20 +510,20 @@ class MenuCard extends StatelessWidget {
                       spreadRadius: 0.0,
                     ), //
                   ]),
-              child: ListTile(
-                leading: Icon(
-                  Icons.handshake_rounded,
-                  size: 40,
-                  color: Colors.purple,
-                ),
-                title: Row(
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => PinjamanPage()));
-                      },
-                      child: Column(
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => PinjamanPage()));
+                },
+                child: ListTile(
+                  leading: Icon(
+                    Icons.handshake_rounded,
+                    size: 40,
+                    color: Colors.purple,
+                  ),
+                  title: Row(
+                    children: [
+                      Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text('Kredit Pinjaman',
@@ -880,30 +546,30 @@ class MenuCard extends StatelessWidget {
                           ),
                         ],
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
-            SizedBox(
-              height: 15,
-            ),
+            // SizedBox(
+            //   height: 15,
+            // ),
             Container(
               padding: EdgeInsets.all(10),
-              height: 70,
+              height: 80,
               decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(8),
+                  // color: Colors.white,
+                  // borderRadius: BorderRadius.circular(8),
                   boxShadow: [
-                    BoxShadow(
-                      color: Colors.red,
-                      offset: const Offset(
-                        3.0,
-                        2.0,
-                      ),
-                      blurRadius: 5.0,
-                      spreadRadius: 1.0,
-                    ), //BoxShadow
+                    // BoxShadow(
+                    //   color: Colors.red,
+                    //   offset: const Offset(
+                    //     3.0,
+                    //     2.0,
+                    //   ),
+                    //   blurRadius: 5.0,
+                    //   spreadRadius: 1.0,
+                    // ), //BoxShadow
                     BoxShadow(
                       color: Colors.white,
                       offset: const Offset(0.0, 0.0),
@@ -911,29 +577,37 @@ class MenuCard extends StatelessWidget {
                       spreadRadius: 0.0,
                     ), //
                   ]),
-              child: ListTile(
-                leading: Icon(
-                  Icons.control_camera,
-                  size: 40,
-                  color: Colors.red,
-                ),
-                title: Row(
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).push(
-                            MaterialPageRoute(builder: (context) => ShuPage()));
-                      },
-                      child: Column(
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (context) => ShuPage()));
+                },
+                child: ListTile(
+                  leading: Icon(
+                    Icons.control_camera,
+                    size: 40,
+                    color: Colors.red,
+                  ),
+                  title: Row(
+                    children: [
+                      Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Sisa Hasil Usaha',
+                          Text('SHU',
                               style: TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 14)),
+                          Row(
+                            children: [
+                              Text(
+                                "Sisa Hasil Usaha",
+                                style: TextStyle(fontSize: 16),
+                              ),
+                            ],
+                          ),
                         ],
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -1015,7 +689,7 @@ class CustomCard extends StatelessWidget {
               ),
             ),
             FractionalTranslation(
-              translation: Offset(-0.35, 0.2),
+              translation: Offset(-0.35, 0.001),
               child: Align(
                 child: CircleAvatar(
                   backgroundColor: Colors.white,
@@ -1032,31 +706,26 @@ class CustomCard extends StatelessWidget {
               ),
             ),
             FractionalTranslation(
-              // translation: Offset(0.3, 0.1),
-              translation: Offset(0.0, 0.0),
+              translation: Offset(0.01, 0.2),
+              // translation: Offset(0.0, 0.0),
               child: Align(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       'Hi, $user',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
-                        fontSize: 16,
+                        fontSize: 12,
                       ),
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          '$email',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 14,
-                          ),
-                        ),
-                      ],
+                    Text(
+                      '$email',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 14,
+                      ),
                     ),
                   ],
                 ),
