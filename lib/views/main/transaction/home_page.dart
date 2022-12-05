@@ -188,7 +188,7 @@ class _HomePageState extends State<HomePage> {
                                 ),
                               )
                             : Container(
-                                height: 150,
+                                height: 180,
                                 child: ListView.builder(
                                   //content
                                   itemCount: listBanner!.data!.length,
@@ -199,7 +199,7 @@ class _HomePageState extends State<HomePage> {
                                     print(currentBanner.lampiran);
                                     return Padding(
                                       padding: const EdgeInsets.only(
-                                          left: 20.0, right: 20),
+                                          left: 20.0, right: 20.0),
                                       child: Row(
                                         children: [
                                           ClipRRect(
@@ -244,45 +244,49 @@ class BannerCard extends StatelessWidget {
             // stops: [0.5, 0.9]
           ),
           // color: R.colors.primary,
-          borderRadius: BorderRadius.circular(20)),
+          borderRadius: BorderRadius.circular(5)),
       height: min(130, 130),
       width: double.infinity,
       child: Stack(
         children: [
           Container(
             width: MediaQuery.of(context).size.width * 0.6,
-            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 15),
+            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   "Cek saldo simpanan atau transaksi pinjaman kini lebih mudah dan nyaman",
                   style: TextStyle(
-                      fontSize: 14,
+                      fontSize: 18,
                       color: Colors.white,
                       fontWeight: FontWeight.bold),
                 ),
                 SizedBox(
                   height: 15,
                 ),
-                Row(
-                  children: [
-                    Icon(
-                      Icons.phone_android,
-                      color: Colors.white,
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Text(
-                      "KOPKAR JPNS MOBILE",
-                      style: TextStyle(
-                          fontSize: 10,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                )
+                // Row(
+                //   children: [
+                //     Icon(
+                //       Icons.phone_android,
+                //       color: Colors.white,
+                //     ),
+                //     Icon(
+                //       Icons.android,
+                //       color: Colors.white,
+                //     ),
+                //     SizedBox(
+                //       width: 10,
+                //     ),
+                //     Text(
+                //       "KOPKAR JPNS MOBILE",
+                //       style: TextStyle(
+                //           fontSize: 10,
+                //           color: Colors.white,
+                //           fontWeight: FontWeight.bold),
+                //     ),
+                //   ],
+                // )
               ],
             ),
           ),
@@ -459,9 +463,21 @@ class MenuCard extends StatelessWidget {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Saldo Simpanan',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 14)),
+                          Row(
+                            children: [
+                              Text('SALDO TABUNGAN',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14)),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Icon(
+                                Icons.verified,
+                                color: Colors.green,
+                              )
+                            ],
+                          ),
                           SizedBox(
                             height: 5,
                           ),
@@ -526,9 +542,21 @@ class MenuCard extends StatelessWidget {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Kredit Pinjaman',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 14)),
+                          Row(
+                            children: [
+                              Text('PINJAMAN',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14)),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Icon(
+                                Icons.verified,
+                                color: Colors.green,
+                              )
+                            ],
+                          ),
                           SizedBox(
                             height: 5,
                           ),
@@ -593,9 +621,21 @@ class MenuCard extends StatelessWidget {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('SHU',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 14)),
+                          Row(
+                            children: [
+                              Text('SHU',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14)),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Icon(
+                                Icons.verified,
+                                color: Colors.green,
+                              )
+                            ],
+                          ),
                           Row(
                             children: [
                               Text(
@@ -717,7 +757,7 @@ class CustomCard extends StatelessWidget {
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
-                        fontSize: 12,
+                        fontSize: 14,
                       ),
                     ),
                     Text(

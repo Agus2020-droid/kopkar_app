@@ -90,15 +90,14 @@ class _AngsuranPageState extends State<AngsuranPage> {
                           Text(
                               DateFormat("dd-MMM-yyy")
                                   .format(DateTime.parse(tglAngsur!)),
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  color: R.colors.greySubtitleHome)),
+                              style:
+                                  TextStyle(color: R.colors.greySubtitleHome)),
                           Text(
-                            "Angsuran " +
-                                DateFormat("MMMM yy")
-                                    .format(DateTime.parse(tglAngsur)),
+                            DateFormat("MMMM yy")
+                                .format(DateTime.parse(tglAngsur)),
                             style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 12),
+                              fontWeight: FontWeight.bold,
+                            ),
                           )
                         ],
                       ),

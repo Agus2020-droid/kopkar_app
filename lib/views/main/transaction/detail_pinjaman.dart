@@ -171,22 +171,24 @@ class DetailPinjam extends StatelessWidget {
       margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
+        color: Colors.white,
         boxShadow: [
           BoxShadow(
-            color: Colors.blue,
-            offset: const Offset(
-              2.0,
-              2.0,
-            ),
-            blurRadius: 1.0,
-            spreadRadius: 0.0,
-          ), //BoxShadow
-          BoxShadow(
-            color: Colors.white,
-            offset: const Offset(0.0, 0.0),
-            blurRadius: 0.0,
-            spreadRadius: 0.0,
-          ), //BoxShadow
+              // color: Colors.blue,
+              // offset: const Offset(
+              //   2.0,
+              //   2.0,
+              // ),
+              // blurRadius: 0.0,
+              // spreadRadius: 0.0,
+              blurRadius: 10,
+              color: Colors.blue.withOpacity(0.25)), //BoxShadow
+          // BoxShadow(
+          //   color: Colors.white,
+          //   offset: const Offset(0.0, 0.0),
+          //   blurRadius: 0.0,
+          //   spreadRadius: 0.0,
+          // ), //BoxShadow
         ],
       ),
       child: Container(

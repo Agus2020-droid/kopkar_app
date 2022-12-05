@@ -1,13 +1,9 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:get/get.dart';
 import 'package:kopkar_japernosa/contents/api_url.dart';
 import 'package:kopkar_japernosa/helpers/preference_helper.dart';
 import 'package:kopkar_japernosa/models/network_response.dart';
-import 'package:kopkar_japernosa/models/user_login.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class KopkarJapernosaApi {
   Dio dioApi() {
